@@ -1,7 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { worksheetsReducer } from "./features/worksheet/worksheet-slice";
-import { clusterWorksheetReducer } from "./features/cluster-worksheets/cluster-worksheet-slice";
+import { clusterWorksheetReducer } from "./features/cluster-worksheet/cluster-worksheet-slice";
 import { headerRowReducer } from "./features/header-row/header-row-slice";
+import { totalStudentReducer } from "./features/total-students/total-students-slice";
+import { baseScholarshipPriceReducer } from "./features/base-scholarship-price/base-scholarship-price-slice";
+import { percentScholarshipRecipientsReducer } from "./features/percent-scholarship-recipients/percent-scholarship-recipients-slice";
 
 export const makeStore = () => {
     return configureStore({
@@ -9,6 +12,9 @@ export const makeStore = () => {
             worksheets: worksheetsReducer,
             clusterWorksheet: clusterWorksheetReducer,
             headerRow: headerRowReducer,
+            totalStudent: totalStudentReducer,
+            baseScholarshipPrice: baseScholarshipPriceReducer,
+            percentScholarshipRecipients: percentScholarshipRecipientsReducer,
         },
     });
 };

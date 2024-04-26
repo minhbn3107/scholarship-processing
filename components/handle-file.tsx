@@ -13,7 +13,7 @@ import {
     ClusterWorksheetsState,
     selectClusterWorksheet,
     setClusterWorksheet,
-} from "@/lib/features/cluster-worksheets/cluster-worksheet-slice";
+} from "@/lib/features/cluster-worksheet/cluster-worksheet-slice";
 
 import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
 import { CiFilter } from "react-icons/ci";
@@ -21,10 +21,12 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { toast } from "sonner";
 import WorkSheetPage from "./worksheet";
-import RenderRawData from "./render-raw-data";
-import preprocessWorksheet from "@/utils/preprocess-worksheet";
 import Loading from "./loading";
-import RenderClusterData from "./render-cluster-data";
+import InputTotalStudents from "./input-total-students";
+import InputBaseScholarshipPrice from "./input-base-scholarship-price";
+import InputPercentScholarshipRecipients from "./input-percent-scholarship-recipients";
+import sortClusterWorkSheetByKey from "@/utils/sort-cluster-by-key";
+import HandleRenderData from "./handle-render-data";
 
 export default function HandleFile() {
     const [files, setFiles] = useState<FileList | null>(null);
@@ -38,6 +40,8 @@ export default function HandleFile() {
     const clusterWorksheet: ClusterWorksheetsState = useAppSelector(
         selectClusterWorksheet
     );
+    const sortedClusterWorksheet = sortClusterWorkSheetByKey(clusterWorksheet);
+
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -48,9 +52,7 @@ export default function HandleFile() {
         setFiles(event.target.files);
     };
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-
+    const handleSubmit = async () => {
         if (!files) return;
         setIsLoading(true);
 
@@ -113,8 +115,6 @@ export default function HandleFile() {
         setIsLoading(false);
     };
 
-    const preprocessedWorksheet = preprocessWorksheet(selectedWorksheet);
-
     return (
         <>
             {isLoading && <Loading />}
@@ -126,24 +126,30 @@ export default function HandleFile() {
                         accept=".xlsx,.xls"
                         multiple
                     />
-                    <form onSubmit={handleSubmit}>
-                        <Button
-                            type="submit"
-                            disabled={hasFiles || !files}
-                            className="w-full"
-                        >
-                            <PiMicrosoftExcelLogoFill className="mr-2 h-4 w-4" />{" "}
-                            Read Excel Files
-                        </Button>
-                    </form>
+                    <Button
+                        onClick={handleSubmit}
+                        disabled={hasFiles || !files}
+                        className="w-full"
+                    >
+                        <PiMicrosoftExcelLogoFill className="mr-2 h-4 w-4" />{" "}
+                        Read Excel Files
+                    </Button>
                     <Button
                         onClick={handleCluster}
                         disabled={!allowCluster || !hasFiles}
                     >
                         <CiFilter className="mr-2 h-4 w-4" /> Cluster
                     </Button>
+                    <InputTotalStudents
+                        clusterData={sortedClusterWorksheet}
+                        disabled={Object.keys(clusterWorksheet).length === 0}
+                    />
+                    <InputBaseScholarshipPrice
+                        clusterData={sortedClusterWorksheet}
+                        disabled={Object.keys(clusterWorksheet).length === 0}
+                    />
+                    <InputPercentScholarshipRecipients />
                 </div>
-
                 <WorkSheetPage
                     worksheets={worksheets}
                     handleWorksheetClick={handleWorksheetClick}
@@ -153,12 +159,11 @@ export default function HandleFile() {
                     isSelectedClusterWorksheet={isSelectedClusterWorksheet}
                 />
             </div>
-            {selectedWorksheet && !isSelectedClusterWorksheet && (
-                <RenderRawData worksheet={preprocessedWorksheet} />
-            )}
-            {isSelectedClusterWorksheet && (
-                <RenderClusterData clusterData={clusterWorksheet} />
-            )}
+            <HandleRenderData
+                selectedWorksheet={selectedWorksheet}
+                isSelectedClusterWorksheet={isSelectedClusterWorksheet}
+                clusterWorksheet={clusterWorksheet}
+            />
         </>
     );
 }

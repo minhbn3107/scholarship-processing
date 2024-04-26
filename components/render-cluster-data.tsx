@@ -1,11 +1,12 @@
 "use client";
+
 import { useState } from "react";
 import { useAppSelector } from "@/lib/hooks";
 import {
     HeaderRowState,
     selectHeaderRow,
 } from "@/lib/features/header-row/header-row-slice";
-import { ClusterWorksheetsState } from "@/lib/features/cluster-worksheets/cluster-worksheet-slice";
+import { ClusterWorksheetsState } from "@/lib/features/cluster-worksheet/cluster-worksheet-slice";
 
 interface RenderClusterDataProps {
     clusterData: ClusterWorksheetsState;

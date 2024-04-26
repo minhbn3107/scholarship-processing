@@ -1,11 +1,7 @@
 "use client";
 
-import { ClusterWorksheetsState } from "@/lib/features/cluster-worksheets/cluster-worksheet-slice";
+import { WorksheetsState } from "@/lib/features/worksheet/worksheet-slice";
 import { Button } from "./ui/button";
-
-interface WorksheetsState {
-    [key: string]: any[][];
-}
 
 interface WorkSheetPageProps {
     worksheets: WorksheetsState;
