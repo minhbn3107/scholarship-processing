@@ -11,7 +11,7 @@ const totalStudentSlice = createSlice({
     initialState,
     reducers: {
         setTotalStudent: (state, action: PayloadAction<TotalStudentsState>) => {
-            // console.log(action.payload);
+            console.log(action.payload);
 
             return {
                 ...state,

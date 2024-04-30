@@ -6,10 +6,10 @@ import {
     HeaderRowState,
     selectHeaderRow,
 } from "@/lib/features/header-row/header-row-slice";
-import { ClusterWorksheetsState } from "@/lib/features/cluster-worksheet/cluster-worksheet-slice";
+import { ClusterWorksheetState } from "@/lib/features/cluster-worksheet/cluster-worksheet-slice";
 
 interface RenderClusterDataProps {
-    clusterData: ClusterWorksheetsState;
+    clusterData: ClusterWorksheetState;
 }
 
 export default function RenderClusterData({

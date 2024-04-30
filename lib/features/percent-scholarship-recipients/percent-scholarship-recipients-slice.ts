@@ -1,8 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export type PercentScholarshipRecipientsState = number[][];
+export type PercentScholarshipRecipientsState = Array<
+    [number, number, string, string]
+>;
 
-const initialState: PercentScholarshipRecipientsState = [[]];
+const initialState: PercentScholarshipRecipientsState = [];
 
 const percentScholarshipRecipientsSlice = createSlice({
     name: "percentScholarshipRecipients",
@@ -12,7 +14,7 @@ const percentScholarshipRecipientsSlice = createSlice({
             state,
             action: PayloadAction<PercentScholarshipRecipientsState>
         ) => {
-            // console.log(action.payload);
+            console.log(action.payload);
 
             return action.payload;
         },
@@ -20,7 +22,7 @@ const percentScholarshipRecipientsSlice = createSlice({
             state,
             action: PayloadAction<number>
         ) => {
-            state[0].splice(action.payload, 1);
+            state.splice(action.payload, 1);
         },
     },
 });

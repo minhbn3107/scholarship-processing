@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ClusterWorksheetsState } from "@/lib/features/cluster-worksheet/cluster-worksheet-slice";
+import { ClusterWorksheetState } from "@/lib/features/cluster-worksheet/cluster-worksheet-slice";
 import { useAppDispatch } from "@/lib/hooks";
 import {
     BaseScholarshipPriceState,
@@ -23,7 +23,7 @@ import {
 import formatCurrency from "@/utils/format-currency";
 
 interface InputBaseScholarshipPriceProps {
-    clusterData: ClusterWorksheetsState;
+    clusterData: ClusterWorksheetState;
     disabled: boolean;
 }
 

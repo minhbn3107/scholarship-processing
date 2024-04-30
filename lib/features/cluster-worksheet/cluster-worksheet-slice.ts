@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export interface ClusterWorksheetsState {
+export interface ClusterWorksheetState {
     [key: string]: any[][];
 }
 
-const initialState: ClusterWorksheetsState = {};
+const initialState: ClusterWorksheetState = {};
 
 const clusterWorksheetSlice = createSlice({
     name: "clusterWorksheet",
@@ -12,10 +12,10 @@ const clusterWorksheetSlice = createSlice({
     reducers: {
         setClusterWorksheet: (
             state,
-            action: PayloadAction<ClusterWorksheetsState>
+            action: PayloadAction<ClusterWorksheetState>
         ) => {
             const allWorksheets: any[][] = [];
-            const newState: ClusterWorksheetsState = {};
+            const newState: ClusterWorksheetState = {};
 
             for (const [key, worksheet] of Object.entries(action.payload)) {
                 allWorksheets.push(...worksheet);
@@ -52,7 +52,7 @@ const clusterWorksheetSlice = createSlice({
                     }
                 });
 
-                // console.log(newState);
+                console.log(newState);
 
                 return newState;
             }

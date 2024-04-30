@@ -8,9 +8,12 @@ import {
     setWorksheets,
 } from "@/lib/features/worksheet/worksheet-slice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { setHeaderRow } from "@/lib/features/header-row/header-row-slice";
 import {
-    ClusterWorksheetsState,
+    selectHeaderRow,
+    setHeaderRow,
+} from "@/lib/features/header-row/header-row-slice";
+import {
+    ClusterWorksheetState,
     selectClusterWorksheet,
     setClusterWorksheet,
 } from "@/lib/features/cluster-worksheet/cluster-worksheet-slice";
@@ -27,6 +30,17 @@ import InputBaseScholarshipPrice from "./input-base-scholarship-price";
 import InputPercentScholarshipRecipients from "./input-percent-scholarship-recipients";
 import sortClusterWorkSheetByKey from "@/utils/sort-cluster-by-key";
 import HandleRenderData from "./handle-render-data";
+import { setFilteredWorksheet } from "@/lib/features/filter-worksheet/filter-worksheet-slice";
+import { selectTotalStudent } from "@/lib/features/total-students/total-students-slice";
+import { selectBaseScholarshipPrice } from "@/lib/features/base-scholarship-price/base-scholarship-price-slice";
+import { selectPercentScholarshipRecipients } from "@/lib/features/percent-scholarship-recipients/percent-scholarship-recipients-slice";
+import {
+    headerRow,
+    clusterWorksheet,
+    totalStudents,
+    baseScholarshipPrice,
+    percentScholarshipRecipients,
+} from "@/sample-data";
 
 export default function HandleFile() {
     const [files, setFiles] = useState<FileList | null>(null);
@@ -37,9 +51,9 @@ export default function HandleFile() {
     const [allowCluster, setAllowCluster] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const worksheets: WorksheetsState = useAppSelector(selectWorksheets);
-    const clusterWorksheet: ClusterWorksheetsState = useAppSelector(
-        selectClusterWorksheet
-    );
+    // const clusterWorksheet: ClusterWorksheetState = useAppSelector(
+    //     selectClusterWorksheet
+    // );
     const sortedClusterWorksheet = sortClusterWorkSheetByKey(clusterWorksheet);
 
     const dispatch = useAppDispatch();
@@ -115,6 +129,24 @@ export default function HandleFile() {
         setIsLoading(false);
     };
 
+    // const headerRow = useAppSelector(selectHeaderRow);
+    // const totalStudents = useAppSelector(selectTotalStudent);
+    // const baseScholarshipPrice = useAppSelector(selectBaseScholarshipPrice);
+    // const percentScholarshipRecipients = useAppSelector(
+    //     selectPercentScholarshipRecipients
+    // );
+    const handleTest = () => {
+        dispatch(
+            setFilteredWorksheet({
+                headerRow,
+                clusterWorksheet,
+                totalStudents,
+                baseScholarshipPrice,
+                percentScholarshipRecipients,
+            })
+        );
+    };
+
     return (
         <>
             {isLoading && <Loading />}
@@ -149,6 +181,7 @@ export default function HandleFile() {
                         disabled={Object.keys(clusterWorksheet).length === 0}
                     />
                     <InputPercentScholarshipRecipients />
+                    <Button onClick={handleTest}>TestCluster</Button>
                 </div>
                 <WorkSheetPage
                     worksheets={worksheets}

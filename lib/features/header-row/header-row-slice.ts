@@ -24,7 +24,7 @@ const headerRowSlice = createSlice({
             }
 
             if (headerRow) {
-                // console.log(headerRow);
+                console.log(headerRow);
                 return headerRow;
             }
         },

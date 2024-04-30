@@ -1,11 +1,11 @@
-import { ClusterWorksheetsState } from "@/lib/features/cluster-worksheet/cluster-worksheet-slice";
+import { ClusterWorksheetState } from "@/lib/features/cluster-worksheet/cluster-worksheet-slice";
 
-export default function sortClusterWorkSheetByKey(obj: ClusterWorksheetsState) {
+export default function sortClusterWorkSheetByKey(obj: ClusterWorksheetState) {
     const keys = Object.keys(obj);
 
     const sortedKeys = keys.sort((a, b) => a.localeCompare(b));
 
-    const sortedObj: ClusterWorksheetsState = {};
+    const sortedObj: ClusterWorksheetState = {};
 
     for (const key of sortedKeys) {
         sortedObj[key] = obj[key];

@@ -1,6 +1,6 @@
 "use client";
 
-import { ClusterWorksheetsState } from "@/lib/features/cluster-worksheet/cluster-worksheet-slice";
+import { ClusterWorksheetState } from "@/lib/features/cluster-worksheet/cluster-worksheet-slice";
 import preprocessWorksheet from "@/utils/preprocess-worksheet";
 import sortClusterWorkSheetByKey from "@/utils/sort-cluster-by-key";
 
@@ -10,7 +10,7 @@ import RenderClusterData from "./render-cluster-data";
 interface HandleRenderData {
     selectedWorksheet: any[][];
     isSelectedClusterWorksheet: boolean;
-    clusterWorksheet: ClusterWorksheetsState;
+    clusterWorksheet: ClusterWorksheetState;
 }
 
 export default function HandleRenderData({

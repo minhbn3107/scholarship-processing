@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ClusterWorksheetsState } from "@/lib/features/cluster-worksheet/cluster-worksheet-slice";
+import { ClusterWorksheetState } from "@/lib/features/cluster-worksheet/cluster-worksheet-slice";
 import { useAppDispatch } from "@/lib/hooks";
 import {
     TotalStudentsState,
@@ -22,7 +22,7 @@ import {
 } from "@/lib/features/total-students/total-students-slice";
 
 interface InputTotalStudentsProps {
-    clusterData: ClusterWorksheetsState;
+    clusterData: ClusterWorksheetState;
     disabled: boolean;
 }
 
@@ -36,10 +36,13 @@ export default function InputTotalStudents({
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: Number(value),
-        }));
+        const isValidInput = /^[0-9]*$/.test(value);
+        if (isValidInput) {
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: Number(value),
+            }));
+        }
     };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
