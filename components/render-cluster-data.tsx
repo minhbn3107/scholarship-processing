@@ -19,7 +19,7 @@ export default function RenderClusterData({
     const [expandedCluster, setExpandedCluster] = useState<string | null>(null);
 
     if (!clusterData || Object.keys(clusterData).length === 0) {
-        return <div>No data to display</div>;
+        return <div>Chưa có dữ liệu được hiển thị</div>;
     }
 
     const toggleCluster = (clusterKey: string) => {

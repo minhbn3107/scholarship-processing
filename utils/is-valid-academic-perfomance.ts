@@ -1,8 +1,9 @@
+import { academicPerformanceOrder } from "@/utils/raking-variable";
+
 export default function isValidAcademicPerformance(
     academicPerformance: string,
     requiredAcademicPerformance: string
 ): boolean {
-    const academicPerformanceOrder = ["Xuất sắc", "Giỏi", "Khá"];
     const requiredAcademicPerformanceIndex = academicPerformanceOrder.indexOf(
         requiredAcademicPerformance
     );

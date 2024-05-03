@@ -3,10 +3,12 @@
 import React, { useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import {
-    PercentScholarshipRecipientsState,
-    setPercentScholarshipRecipients,
-    selectPercentScholarshipRecipients,
-} from "@/lib/features/percent-scholarship-recipients/percent-scholarship-recipients-slice";
+    ScholarshipConditionState,
+    setScholarshipCondition,
+    selectScholarshipCondition,
+} from "@/lib/features/scholarship-condition/scholarship-condition-slice";
+import { IoIosRemoveCircleOutline } from "react-icons/io";
+import { BsInputCursorText } from "react-icons/bs";
 import { Button } from "@/components/ui/button";
 import {
     Dialog,
@@ -25,14 +27,18 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import {
+    academicPerformanceOrder,
+    conductOrder,
+} from "@/utils/raking-variable";
 
-export default function InputPercentScholarshipRecipients() {
+export default function InputScholarshipCondition() {
     const dispatch = useAppDispatch();
     const percentScholarshipRecipients = useAppSelector(
-        selectPercentScholarshipRecipients
+        selectScholarshipCondition
     );
     const [open, setOpen] = useState<boolean>(false);
-    const [formData, setFormData] = useState<PercentScholarshipRecipientsState>(
+    const [formData, setFormData] = useState<ScholarshipConditionState>(
         percentScholarshipRecipients.slice()
     );
 
@@ -92,7 +98,7 @@ export default function InputPercentScholarshipRecipients() {
 
     const handleSaveChanges = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        dispatch(setPercentScholarshipRecipients(formData));
+        dispatch(setScholarshipCondition(formData));
         setOpen(false);
     };
 
@@ -100,15 +106,14 @@ export default function InputPercentScholarshipRecipients() {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button variant="default">
-                    Input Percent Scholarship Recipients
+                    <BsInputCursorText className="mr-2 h-4 w-4" />
+                    Nhập Điều Kiện Học Bổng
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[700px]">
                 <form onSubmit={handleSaveChanges}>
                     <DialogHeader>
-                        <DialogTitle>
-                            Input Percent Scholarship Recipients
-                        </DialogTitle>
+                        <DialogTitle>Nhập Điều Kiện Học Bổng</DialogTitle>
                         <DialogDescription>
                             Cột 1 là phần trăm học sinh, Cột 2 là phần trăm số
                             tiền được nhận, Cột 3 là loại học lực, Cột 4 là loại
@@ -119,13 +124,12 @@ export default function InputPercentScholarshipRecipients() {
                         {formData.map((row, rowIndex) => (
                             <div
                                 key={rowIndex}
-                                className="grid grid-cols-10 items-center gap-4"
+                                className="grid grid-cols-12 items-center gap-4"
                             >
                                 <div className="col-span-2 relative">
                                     <Input
                                         type="number"
                                         required
-                                        min={0}
                                         onChange={(e) =>
                                             handleChange(
                                                 rowIndex,
@@ -133,9 +137,8 @@ export default function InputPercentScholarshipRecipients() {
                                                 e.target.value
                                             )
                                         }
-                                        pattern="[0-9,.]*"
                                         value={row[0] || 0}
-                                        className="w-full pr-12"
+                                        className="w-full pr-8"
                                     />
                                     <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
                                         %
@@ -145,7 +148,6 @@ export default function InputPercentScholarshipRecipients() {
                                     <Input
                                         type="number"
                                         required
-                                        min={0}
                                         onChange={(e) =>
                                             handleChange(
                                                 rowIndex,
@@ -153,15 +155,14 @@ export default function InputPercentScholarshipRecipients() {
                                                 e.target.value
                                             )
                                         }
-                                        pattern="[0-9,.]*"
                                         value={row[1] || 0}
-                                        className="w-full pr-12"
+                                        className="w-full pr-8"
                                     />
                                     <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
                                         %
                                     </span>
                                 </div>
-                                <div className="col-span-2">
+                                <div className="col-span-3">
                                     <Select
                                         onValueChange={(value) =>
                                             handleSelectChange(
@@ -176,19 +177,20 @@ export default function InputPercentScholarshipRecipients() {
                                             <SelectValue placeholder="Chọn học lực" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="Xuất sắc">
-                                                Xuất sắc
-                                            </SelectItem>
-                                            <SelectItem value="Giỏi">
-                                                Giỏi
-                                            </SelectItem>
-                                            <SelectItem value="Khá">
-                                                Khá
-                                            </SelectItem>
+                                            {academicPerformanceOrder.map(
+                                                (value) => (
+                                                    <SelectItem
+                                                        key={value}
+                                                        value={value}
+                                                    >
+                                                        {value}
+                                                    </SelectItem>
+                                                )
+                                            )}
                                         </SelectContent>
                                     </Select>
                                 </div>
-                                <div className="col-span-2">
+                                <div className="col-span-3">
                                     <Select
                                         onValueChange={(value) =>
                                             handleSelectChange(
@@ -203,25 +205,24 @@ export default function InputPercentScholarshipRecipients() {
                                             <SelectValue placeholder="Chọn hạnh kiểm" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="Xuất sắc">
-                                                Xuất sắc
-                                            </SelectItem>
-                                            <SelectItem value="Tốt">
-                                                Tốt
-                                            </SelectItem>
-                                            <SelectItem value="Khá">
-                                                Khá
-                                            </SelectItem>
+                                            {conductOrder.map((value) => (
+                                                <SelectItem
+                                                    key={value}
+                                                    value={value}
+                                                >
+                                                    {value}
+                                                </SelectItem>
+                                            ))}
                                         </SelectContent>
                                     </Select>
                                 </div>
-                                <div className="col-span-2">
+                                <div className="col-span-2 text-center">
                                     <Button
                                         type="button"
                                         variant="destructive"
                                         onClick={() => handleDelete(rowIndex)}
                                     >
-                                        Delete
+                                        <IoIosRemoveCircleOutline />
                                     </Button>
                                 </div>
                             </div>
@@ -229,12 +230,12 @@ export default function InputPercentScholarshipRecipients() {
                     </div>
                     <DialogFooter>
                         <Button type="button" onClick={handleAdd}>
-                            Add
+                            Thêm
                         </Button>
                         <Button type="button" onClick={handleClear}>
-                            Clear
+                            Xóa hết
                         </Button>
-                        <Button type="submit">Save Changes</Button>
+                        <Button type="submit">Lưu Thay Đổi</Button>
                     </DialogFooter>
                 </form>
             </DialogContent>

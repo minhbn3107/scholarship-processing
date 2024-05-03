@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ClusterWorksheetState } from "@/lib/features/cluster-worksheet/cluster-worksheet-slice";
 import { useAppDispatch } from "@/lib/hooks";
+import { BsInputCursorText } from "react-icons/bs";
 import {
     TotalStudentsState,
     setTotalStudent,
@@ -55,16 +56,15 @@ export default function InputTotalStudents({
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button variant="default" disabled={disabled}>
-                    Input Total
+                    <BsInputCursorText className="mr-2 h-4 w-4" />
+                    Nhập Sỉ Số Của Khoa và Khóa
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
                 <form onSubmit={handleSubmit}>
                     <DialogHeader>
-                        <DialogTitle>Input Total Students</DialogTitle>
-                        <DialogDescription>
-                            Input total students
-                        </DialogDescription>
+                        <DialogTitle>Nhập Sỉ Số Của Khoa và Khóa</DialogTitle>
+                        <DialogDescription></DialogDescription>
                     </DialogHeader>
                     <div className="grid gap-4 py-4 max-h-96 overflow-y-auto">
                         {Object.keys(clusterData).map((key) => (
@@ -92,7 +92,7 @@ export default function InputTotalStudents({
                         ))}
                     </div>
                     <DialogFooter>
-                        <Button type="submit">Save changes</Button>
+                        <Button type="submit">Lưu Thay Đổi</Button>
                     </DialogFooter>
                 </form>
             </DialogContent>

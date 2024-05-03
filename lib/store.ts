@@ -4,8 +4,8 @@ import { clusterWorksheetReducer } from "./features/cluster-worksheet/cluster-wo
 import { headerRowReducer } from "./features/header-row/header-row-slice";
 import { totalStudentReducer } from "./features/total-students/total-students-slice";
 import { baseScholarshipPriceReducer } from "./features/base-scholarship-price/base-scholarship-price-slice";
-import { percentScholarshipRecipientsReducer } from "./features/percent-scholarship-recipients/percent-scholarship-recipients-slice";
-import { filteredWorksheetReducer } from "./features/filter-worksheet/filter-worksheet-slice";
+import { scholarshipConditionReducer } from "./features/scholarship-condition/scholarship-condition-slice";
+import { filteredWorksheetReducer } from "./features/filtered-worksheet/filtered-worksheet-slice";
 
 export const makeStore = () => {
     return configureStore({
@@ -15,7 +15,7 @@ export const makeStore = () => {
             headerRow: headerRowReducer,
             totalStudent: totalStudentReducer,
             baseScholarshipPrice: baseScholarshipPriceReducer,
-            percentScholarshipRecipients: percentScholarshipRecipientsReducer,
+            scholarshipCondition: scholarshipConditionReducer,
             filteredWorksheet: filteredWorksheetReducer,
         },
     });

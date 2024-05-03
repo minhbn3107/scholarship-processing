@@ -12,7 +12,7 @@ export default function RenderRawData({ worksheet }: RenderRawDataProps) {
     const [currentPage, setCurrentPage] = useState(1);
 
     if (!worksheet || worksheet.length === 0) {
-        return <div>No data to display</div>;
+        return <div>Chưa có dữ liệu được hiển thị</div>;
     }
 
     const headerRow = worksheet[0];

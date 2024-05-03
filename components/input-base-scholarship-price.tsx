@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { BsInputCursorText } from "react-icons/bs";
 import { ClusterWorksheetState } from "@/lib/features/cluster-worksheet/cluster-worksheet-slice";
 import { useAppDispatch } from "@/lib/hooks";
 import {
@@ -65,15 +66,18 @@ export default function InputBaseScholarshipPrice({
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button variant="default" disabled={disabled}>
-                    Input Base Scholarship Price
+                    <BsInputCursorText className="mr-2 h-4 w-4" />
+                    Nhập Tiền Học Bổng Của Khoa và Khóa
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[800px]">
                 <form onSubmit={handleSubmit}>
                     <DialogHeader>
-                        <DialogTitle>Input Base Scholarship Price</DialogTitle>
+                        <DialogTitle>
+                            Nhập Tiền Học Bổng Của Khoa và Khóa
+                        </DialogTitle>
                         <DialogDescription>
-                            Cột 1 cho hệ thường, Cột 2 cho hệ tiên tiến
+                            Cột 1 cho hệ chính quy, Cột 2 cho hệ tiên tiến
                         </DialogDescription>
                     </DialogHeader>
                     <div className="grid gap-4 py-4 max-h-96 overflow-y-auto">
@@ -133,7 +137,7 @@ export default function InputBaseScholarshipPrice({
                         ))}
                     </div>
                     <DialogFooter>
-                        <Button type="submit">Save changes</Button>
+                        <Button type="submit">Lưu Thay Đổi</Button>
                     </DialogFooter>
                 </form>
             </DialogContent>

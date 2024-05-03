@@ -1,11 +1,18 @@
+import { BaseScholarshipPriceState } from "@/lib/features/base-scholarship-price/base-scholarship-price-slice";
+import {
+    FilteredTotal,
+    FilteredWorksheetsState,
+} from "@/lib/features/filtered-worksheet/filtered-worksheet-slice";
+import { ScholarshipConditionState } from "@/lib/features/scholarship-condition/scholarship-condition-slice";
+
 export default function modifyClassificationData(
-    classificationData: {
-        [key: string]: { [key: string]: any[] };
-    },
-    filteredTotal: { [key: string]: number[] },
-    percentScholarshipRecipients: Array<[number, number, string, string]>
+    classificationData: FilteredWorksheetsState,
+    filteredTotal: FilteredTotal,
+    scholarshipCondition: ScholarshipConditionState,
+    baseScholarshipPrice: BaseScholarshipPriceState,
+    classIndex: number
 ) {
-    const modifiedData: { [key: string]: { [key: string]: any[] } } = {};
+    const modifiedData: FilteredWorksheetsState = {};
 
     for (const key in classificationData) {
         modifiedData[key] = {};
@@ -13,6 +20,8 @@ export default function modifyClassificationData(
         const academicPerformanceAndConductKeys = Object.keys(
             classificationData[key]
         );
+        const [lowScholarshipPrice, highScholarshipPrice] =
+            baseScholarshipPrice[key];
 
         let alreadyIncludedRows: any[] = [];
 
@@ -22,18 +31,33 @@ export default function modifyClassificationData(
                 academicPerformanceAndConductKeys[i];
             const students =
                 classificationData[key][academicPerformanceAndConduct];
-
-            const [_, scholarshipPercent] = percentScholarshipRecipients[i];
+            const [_, scholarshipPercent] = scholarshipCondition[i];
 
             if (students.length <= requiredCount) {
                 modifiedData[key][academicPerformanceAndConduct] = students.map(
-                    (row) => [...row, scholarshipPercent]
+                    (row) => {
+                        const classValue = row[classIndex];
+                        const scholarshipPrice = classValue.endsWith("TT")
+                            ? highScholarshipPrice
+                            : lowScholarshipPrice;
+                        const scholarshipAmount =
+                            (scholarshipPrice * scholarshipPercent) / 100;
+                        return [...row, scholarshipPercent, scholarshipAmount];
+                    }
                 );
                 alreadyIncludedRows = [...alreadyIncludedRows, ...students];
             } else {
                 modifiedData[key][academicPerformanceAndConduct] = students
                     .slice(0, requiredCount)
-                    .map((row) => [...row, scholarshipPercent]);
+                    .map((row) => {
+                        const classValue = row[classIndex];
+                        const scholarshipPrice = classValue.endsWith("TT")
+                            ? highScholarshipPrice
+                            : lowScholarshipPrice;
+                        const scholarshipAmount =
+                            (scholarshipPrice * scholarshipPercent) / 100;
+                        return [...row, scholarshipPercent, scholarshipAmount];
+                    });
                 alreadyIncludedRows = [
                     ...alreadyIncludedRows,
                     ...students.slice(0, requiredCount),
@@ -52,10 +76,19 @@ export default function modifyClassificationData(
                         [];
                     modifiedData[key][nextAcademicPerformanceAndConduct] = [
                         ...modifiedData[key][nextAcademicPerformanceAndConduct],
-                        ...remainingStudents.map((row) => [
-                            ...row,
-                            scholarshipPercent,
-                        ]),
+                        ...remainingStudents.map((row) => {
+                            const classValue = row[classIndex];
+                            const scholarshipPrice = classValue.endsWith("TT")
+                                ? highScholarshipPrice
+                                : lowScholarshipPrice;
+                            const scholarshipAmount =
+                                (scholarshipPrice * scholarshipPercent) / 100;
+                            return [
+                                ...row,
+                                scholarshipPercent,
+                                scholarshipAmount,
+                            ];
+                        }),
                     ];
                 }
             }

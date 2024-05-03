@@ -9,6 +9,7 @@ import {
 } from "@/lib/features/worksheet/worksheet-slice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import {
+    HeaderRowState,
     selectHeaderRow,
     setHeaderRow,
 } from "@/lib/features/header-row/header-row-slice";
@@ -20,6 +21,7 @@ import {
 
 import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
 import { CiFilter } from "react-icons/ci";
+import { GrSort } from "react-icons/gr";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { toast } from "sonner";
@@ -27,25 +29,36 @@ import WorkSheetPage from "./worksheet";
 import Loading from "./loading";
 import InputTotalStudents from "./input-total-students";
 import InputBaseScholarshipPrice from "./input-base-scholarship-price";
-import InputPercentScholarshipRecipients from "./input-percent-scholarship-recipients";
+import InputScholarshipCondition from "./input-scholarship-condition";
 import sortClusterWorkSheetByKey from "@/utils/sort-cluster-by-key";
 import HandleRenderData from "./handle-render-data";
-import { setFilteredWorksheet } from "@/lib/features/filter-worksheet/filter-worksheet-slice";
-import { selectTotalStudent } from "@/lib/features/total-students/total-students-slice";
-import { selectBaseScholarshipPrice } from "@/lib/features/base-scholarship-price/base-scholarship-price-slice";
-import { selectPercentScholarshipRecipients } from "@/lib/features/percent-scholarship-recipients/percent-scholarship-recipients-slice";
+import { setFilteredWorksheet } from "@/lib/features/filtered-worksheet/filtered-worksheet-slice";
 import {
     headerRow,
     clusterWorksheet,
     totalStudents,
     baseScholarshipPrice,
-    percentScholarshipRecipients,
+    scholarshipCondition,
 } from "@/sample-data";
+import {
+    TotalStudentsState,
+    selectTotalStudent,
+} from "@/lib/features/total-students/total-students-slice";
+import {
+    BaseScholarshipPriceState,
+    selectBaseScholarshipPrice,
+} from "@/lib/features/base-scholarship-price/base-scholarship-price-slice";
+import {
+    ScholarshipConditionState,
+    selectScholarshipCondition,
+} from "@/lib/features/scholarship-condition/scholarship-condition-slice";
 
 export default function HandleFile() {
     const [files, setFiles] = useState<FileList | null>(null);
     const [selectedWorksheet, setSelectedWorksheet] = useState<any[][]>([]);
     const [isSelectedClusterWorksheet, setIsSelectedClusterWorksheet] =
+        useState<boolean>(false);
+    const [isSelectedFilteredWorksheet, setIsSelectedFilteredWorksheet] =
         useState<boolean>(false);
     const [hasFiles, setHasFiles] = useState<boolean>(false);
     const [allowCluster, setAllowCluster] = useState<boolean>(false);
@@ -53,6 +66,15 @@ export default function HandleFile() {
     const worksheets: WorksheetsState = useAppSelector(selectWorksheets);
     // const clusterWorksheet: ClusterWorksheetState = useAppSelector(
     //     selectClusterWorksheet
+    // );
+    // const headerRow: HeaderRowState = useAppSelector(selectHeaderRow);
+    // const totalStudents: TotalStudentsState =
+    //     useAppSelector(selectTotalStudent);
+    // const baseScholarshipPrice: BaseScholarshipPriceState = useAppSelector(
+    //     selectBaseScholarshipPrice
+    // );
+    // const scholarshipCondition: ScholarshipConditionState = useAppSelector(
+    //     selectScholarshipCondition
     // );
     const sortedClusterWorksheet = sortClusterWorkSheetByKey(clusterWorksheet);
 
@@ -109,6 +131,7 @@ export default function HandleFile() {
     const handleWorksheetClick = (sheetName: string) => {
         setIsLoading(true);
         setIsSelectedClusterWorksheet(false);
+        setIsSelectedFilteredWorksheet(false);
         const worksheet = worksheets[sheetName];
         // console.log(worksheet);
         setSelectedWorksheet(worksheet);
@@ -125,26 +148,31 @@ export default function HandleFile() {
     const handleClusterWorksheetClick = () => {
         setIsLoading(true);
         setSelectedWorksheet([]);
+        setIsSelectedFilteredWorksheet(false);
         setIsSelectedClusterWorksheet(true);
         setIsLoading(false);
     };
 
-    // const headerRow = useAppSelector(selectHeaderRow);
-    // const totalStudents = useAppSelector(selectTotalStudent);
-    // const baseScholarshipPrice = useAppSelector(selectBaseScholarshipPrice);
-    // const percentScholarshipRecipients = useAppSelector(
-    //     selectPercentScholarshipRecipients
-    // );
-    const handleTest = () => {
+    const handleFilter = () => {
+        setIsLoading(true);
         dispatch(
             setFilteredWorksheet({
                 headerRow,
                 clusterWorksheet,
                 totalStudents,
                 baseScholarshipPrice,
-                percentScholarshipRecipients,
+                scholarshipCondition,
             })
         );
+        setIsLoading(false);
+    };
+
+    const handleFilterWorksheetClick = () => {
+        setIsLoading(true);
+        setSelectedWorksheet([]);
+        setIsSelectedClusterWorksheet(false);
+        setIsSelectedFilteredWorksheet(true);
+        setIsLoading(false);
     };
 
     return (
@@ -164,13 +192,14 @@ export default function HandleFile() {
                         className="w-full"
                     >
                         <PiMicrosoftExcelLogoFill className="mr-2 h-4 w-4" />{" "}
-                        Read Excel Files
+                        Đọc File
                     </Button>
                     <Button
                         onClick={handleCluster}
                         disabled={!allowCluster || !hasFiles}
                     >
-                        <CiFilter className="mr-2 h-4 w-4" /> Cluster
+                        <GrSort className="mr-2 h-4 w-4" /> Phân Chia Theo Khóa
+                        Và Khoa
                     </Button>
                     <InputTotalStudents
                         clusterData={sortedClusterWorksheet}
@@ -180,8 +209,23 @@ export default function HandleFile() {
                         clusterData={sortedClusterWorksheet}
                         disabled={Object.keys(clusterWorksheet).length === 0}
                     />
-                    <InputPercentScholarshipRecipients />
-                    <Button onClick={handleTest}>TestCluster</Button>
+                    <InputScholarshipCondition />
+                    <Button
+                        onClick={handleFilter}
+                        disabled={
+                            !(
+                                headerRow.length !== 0 &&
+                                Object.keys(clusterWorksheet).length !== 0 &&
+                                Object.keys(totalStudents).length !== 0 &&
+                                Object.keys(baseScholarshipPrice).length !==
+                                    0 &&
+                                scholarshipCondition.length !== 0
+                            )
+                        }
+                    >
+                        <CiFilter className="mr-2 h-4 w-4" />
+                        Dữ Liệu Theo Điều Kiện
+                    </Button>
                 </div>
                 <WorkSheetPage
                     worksheets={worksheets}
@@ -190,12 +234,22 @@ export default function HandleFile() {
                     clustered={Object.keys(clusterWorksheet).length !== 0}
                     handleClusterWorksheetClick={handleClusterWorksheetClick}
                     isSelectedClusterWorksheet={isSelectedClusterWorksheet}
+                    filtered={
+                        headerRow.length !== 0 &&
+                        Object.keys(clusterWorksheet).length !== 0 &&
+                        Object.keys(totalStudents).length !== 0 &&
+                        Object.keys(baseScholarshipPrice).length !== 0 &&
+                        scholarshipCondition.length !== 0
+                    }
+                    handleFilterWorksheetClick={handleFilterWorksheetClick}
+                    isSelectedFilteredWorksheet={isSelectedFilteredWorksheet}
                 />
             </div>
             <HandleRenderData
                 selectedWorksheet={selectedWorksheet}
                 isSelectedClusterWorksheet={isSelectedClusterWorksheet}
                 clusterWorksheet={clusterWorksheet}
+                isSelectedFilteredWorksheet={isSelectedFilteredWorksheet}
             />
         </>
     );
