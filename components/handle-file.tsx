@@ -52,6 +52,9 @@ import {
     ScholarshipConditionState,
     selectScholarshipCondition,
 } from "@/lib/features/scholarship-condition/scholarship-condition-slice";
+import DownloadFile from "./download-file";
+
+const ExcelJS = require("exceljs");
 
 export default function HandleFile() {
     const [files, setFiles] = useState<FileList | null>(null);
@@ -76,6 +79,7 @@ export default function HandleFile() {
     // const scholarshipCondition: ScholarshipConditionState = useAppSelector(
     //     selectScholarshipCondition
     // );
+
     const sortedClusterWorksheet = sortClusterWorkSheetByKey(clusterWorksheet);
 
     const dispatch = useAppDispatch();
@@ -224,8 +228,12 @@ export default function HandleFile() {
                         }
                     >
                         <CiFilter className="mr-2 h-4 w-4" />
-                        Dữ Liệu Theo Điều Kiện
+                        Lọc Dữ Liệu Theo Điều Kiện
                     </Button>
+                    <DownloadFile
+                        setIsLoading={setIsLoading}
+                        headerRow={headerRow}
+                    />
                 </div>
                 <WorkSheetPage
                     worksheets={worksheets}

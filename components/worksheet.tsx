@@ -1,6 +1,7 @@
 "use client";
 
 import { WorksheetsState } from "@/lib/features/worksheet/worksheet-slice";
+import { FaCloudDownloadAlt } from "react-icons/fa";
 import { Button } from "./ui/button";
 import {
     FilteredWorksheetsState,
@@ -31,10 +32,6 @@ export default function WorkSheetPage({
     handleFilterWorksheetClick,
     isSelectedFilteredWorksheet,
 }: WorkSheetPageProps) {
-    const filteredWorksheet: FilteredWorksheetsState = useAppSelector(
-        selectFilteredWorksheet
-    );
-
     return (
         <>
             <div className="flex flex-1 gap-2 flex-wrap">
@@ -63,9 +60,8 @@ export default function WorkSheetPage({
                         Bảng chia theo khoa và khóa
                     </Button>
                 )}
-                {filtered &&
-                    filteredWorksheet &&
-                    Object.keys(filteredWorksheet).length !== 0 && (
+                {filtered && (
+                    <>
                         <Button
                             onClick={() => handleFilterWorksheetClick()}
                             variant={
@@ -75,7 +71,8 @@ export default function WorkSheetPage({
                         >
                             Bảng lọc sinh viên nhận học bổng
                         </Button>
-                    )}
+                    </>
+                )}
             </div>
         </>
     );

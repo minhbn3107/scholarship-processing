@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { readExcel } from "@/actions/readFile";
+import readExcel from "@/actions/readFile";
 
 export const POST = async (req: Request) => {
     const formData = await req.formData();

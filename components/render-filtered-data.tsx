@@ -11,10 +11,9 @@ import {
     selectHeaderRow,
 } from "@/lib/features/header-row/header-row-slice";
 import { headerRow } from "@/sample-data";
+import formatCurrency from "@/utils/format-currency";
 
-interface RenderFilteredDataProps {}
-
-export default function RenderFilteredData({}: RenderFilteredDataProps) {
+export default function RenderFilteredData() {
     // const headerRow: HeaderRowState = useAppSelector(selectHeaderRow);
 
     const filteredWorksheet: FilteredWorksheetsState = useAppSelector(
@@ -157,6 +156,22 @@ export default function RenderFilteredData({}: RenderFilteredDataProps) {
                                                                                         ? cell.result ||
                                                                                           cell.error ||
                                                                                           "N/A"
+                                                                                        : cellIndex ===
+                                                                                          row.length -
+                                                                                              2
+                                                                                        ? `${formatCurrency(
+                                                                                              parseFloat(
+                                                                                                  cell
+                                                                                              )
+                                                                                          )}%`
+                                                                                        : cellIndex ===
+                                                                                          row.length -
+                                                                                              1
+                                                                                        ? formatCurrency(
+                                                                                              parseFloat(
+                                                                                                  cell
+                                                                                              )
+                                                                                          )
                                                                                         : cell ||
                                                                                           ""}
                                                                                 </td>

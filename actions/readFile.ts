@@ -2,7 +2,7 @@
 
 const ExcelJS = require("exceljs");
 
-export const readExcel = async (buffer: Buffer, fileName: string) => {
+export default async function readExcel(buffer: Buffer, fileName: string) {
     try {
         const workbook = new ExcelJS.Workbook();
         console.log("Loading Excel file...");
@@ -25,4 +25,4 @@ export const readExcel = async (buffer: Buffer, fileName: string) => {
         console.error("Error reading Excel file:", error);
         throw error;
     }
-};
+}
