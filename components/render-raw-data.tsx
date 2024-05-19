@@ -55,16 +55,16 @@ export default function RenderRawData({ worksheet }: RenderRawDataProps) {
                     disabled={currentPage === 1}
                     onClick={() => handlePageChange(currentPage - 1)}
                 >
-                    Previous
+                    Trước
                 </button>
                 <span>
-                    Page {currentPage} of {totalPages}
+                    Trang {currentPage} Trên {totalPages}
                 </span>
                 <button
                     disabled={currentPage === totalPages}
                     onClick={() => handlePageChange(currentPage + 1)}
                 >
-                    Next
+                    Sau
                 </button>
             </div>
         </div>

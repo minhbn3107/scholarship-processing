@@ -33,13 +33,13 @@ import InputScholarshipCondition from "./input-scholarship-condition";
 import sortClusterWorkSheetByKey from "@/utils/sort-cluster-by-key";
 import HandleRenderData from "./handle-render-data";
 import { setFilteredWorksheet } from "@/lib/features/filtered-worksheet/filtered-worksheet-slice";
-import {
-    headerRow,
-    clusterWorksheet,
-    totalStudents,
-    baseScholarshipPrice,
-    scholarshipCondition,
-} from "@/sample-data";
+// import {
+//     headerRow,
+//     clusterWorksheet,
+//     totalStudents,
+//     baseScholarshipPrice,
+//     scholarshipCondition,
+// } from "@/sample-data";
 import {
     TotalStudentsState,
     selectTotalStudent,
@@ -67,18 +67,18 @@ export default function HandleFile() {
     const [allowCluster, setAllowCluster] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const worksheets: WorksheetsState = useAppSelector(selectWorksheets);
-    // const clusterWorksheet: ClusterWorksheetState = useAppSelector(
-    //     selectClusterWorksheet
-    // );
-    // const headerRow: HeaderRowState = useAppSelector(selectHeaderRow);
-    // const totalStudents: TotalStudentsState =
-    //     useAppSelector(selectTotalStudent);
-    // const baseScholarshipPrice: BaseScholarshipPriceState = useAppSelector(
-    //     selectBaseScholarshipPrice
-    // );
-    // const scholarshipCondition: ScholarshipConditionState = useAppSelector(
-    //     selectScholarshipCondition
-    // );
+    const clusterWorksheet: ClusterWorksheetState = useAppSelector(
+        selectClusterWorksheet
+    );
+    const headerRow: HeaderRowState = useAppSelector(selectHeaderRow);
+    const totalStudents: TotalStudentsState =
+        useAppSelector(selectTotalStudent);
+    const baseScholarshipPrice: BaseScholarshipPriceState = useAppSelector(
+        selectBaseScholarshipPrice
+    );
+    const scholarshipCondition: ScholarshipConditionState = useAppSelector(
+        selectScholarshipCondition
+    );
 
     const sortedClusterWorksheet = sortClusterWorkSheetByKey(clusterWorksheet);
 
@@ -99,7 +99,7 @@ export default function HandleFile() {
         const worksheetsData: WorksheetsState = {};
 
         for (let i = 0; i < files.length; i++) {
-            toast.info(`Loading ${files.item(i)?.name}...`, {
+            toast.info(`Đang Tải ${files.item(i)?.name}...`, {
                 action: {
                     label: "Close",
                     onClick: () => {},
@@ -118,7 +118,7 @@ export default function HandleFile() {
                     console.error(`Error uploading file ${file.name}:`, error);
                 }
             }
-            toast.success(`Loading ${files.item(i)?.name} completed!`, {
+            toast.success(`Tải Lên ${files.item(i)?.name} Hoàn Tất!`, {
                 action: {
                     label: "Close",
                     onClick: () => {},
