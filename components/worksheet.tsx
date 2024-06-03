@@ -34,7 +34,7 @@ export default function WorkSheetPage({
 }: WorkSheetPageProps) {
     return (
         <>
-            <div className="flex flex-1 gap-2 flex-wrap">
+            <div className="flex gap-2 flex-wrap">
                 {Object.keys(worksheets).map((sheetName) => (
                     <Button
                         key={sheetName}

@@ -9,6 +9,7 @@ import { BaseScholarshipPriceState } from "@/lib/features/base-scholarship-price
 import modifyClassificationData from "@/utils/modify-classification-data";
 import calculateFilteredTotal from "@/utils/calculate-filtered-total";
 import classifyData from "@/utils/classify-data";
+import { ExceptionBaseScholarshipPriceState } from "../exception-base-scholarship-price/exception-base-scholarship-price-slice";
 
 export interface FilteredWorksheetsState {
     [key: string]: { [key: string]: any[] };
@@ -35,6 +36,7 @@ const filteredWorksheetSlice = createSlice({
                 clusterWorksheet: ClusterWorksheetState;
                 totalStudents: TotalStudentsState;
                 baseScholarshipPrice: BaseScholarshipPriceState;
+                exceptionBaseScholarshipPrice: ExceptionBaseScholarshipPriceState;
                 scholarshipCondition: ScholarshipConditionState;
             }>
         ) => {
@@ -43,6 +45,7 @@ const filteredWorksheetSlice = createSlice({
                 clusterWorksheet,
                 totalStudents,
                 baseScholarshipPrice,
+                exceptionBaseScholarshipPrice,
                 scholarshipCondition,
             } = action.payload;
 
@@ -75,6 +78,7 @@ const filteredWorksheetSlice = createSlice({
                 filteredTotal,
                 scholarshipCondition,
                 baseScholarshipPrice,
+                exceptionBaseScholarshipPrice,
                 classIndex
             );
 

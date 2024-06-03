@@ -28,7 +28,7 @@ import { toast } from "sonner";
 import WorkSheetPage from "./worksheet";
 import Loading from "./loading";
 import InputTotalStudents from "./input-total-students";
-import InputBaseScholarshipPrice from "./input-base-scholarship-price";
+import InputScholarshipPrice from "./input-scholarship-price";
 import InputScholarshipCondition from "./input-scholarship-condition";
 import sortClusterWorkSheetByKey from "@/utils/sort-cluster-by-key";
 import HandleRenderData from "./handle-render-data";
@@ -38,6 +38,7 @@ import { setFilteredWorksheet } from "@/lib/features/filtered-worksheet/filtered
 //     clusterWorksheet,
 //     totalStudents,
 //     baseScholarshipPrice,
+//     exceptionBaseScholarshipPrice,
 //     scholarshipCondition,
 // } from "@/sample-data";
 import {
@@ -53,8 +54,10 @@ import {
     selectScholarshipCondition,
 } from "@/lib/features/scholarship-condition/scholarship-condition-slice";
 import DownloadFile from "./download-file";
-
-const ExcelJS = require("exceljs");
+import {
+    ExceptionBaseScholarshipPriceState,
+    selectExceptionBaseScholarshipPrice,
+} from "@/lib/features/exception-base-scholarship-price/exception-base-scholarship-price-slice";
 
 export default function HandleFile() {
     const [files, setFiles] = useState<FileList | null>(null);
@@ -79,6 +82,8 @@ export default function HandleFile() {
     const scholarshipCondition: ScholarshipConditionState = useAppSelector(
         selectScholarshipCondition
     );
+    const exceptionBaseScholarshipPrice: ExceptionBaseScholarshipPriceState =
+        useAppSelector(selectExceptionBaseScholarshipPrice);
 
     const sortedClusterWorksheet = sortClusterWorkSheetByKey(clusterWorksheet);
 
@@ -165,6 +170,7 @@ export default function HandleFile() {
                 clusterWorksheet,
                 totalStudents,
                 baseScholarshipPrice,
+                exceptionBaseScholarshipPrice,
                 scholarshipCondition,
             })
         );
@@ -183,7 +189,7 @@ export default function HandleFile() {
         <>
             {isLoading && <Loading />}
             <div className="flex gap-4 w-full">
-                <div className="grid max-w-sm items-center gap-1.5 flex-shrink-0">
+                <div className="grid max-w-sm items-center gap-1.5">
                     <Input
                         type="file"
                         onChange={handleFileChange}
@@ -195,21 +201,21 @@ export default function HandleFile() {
                         disabled={hasFiles || !files}
                         className="w-full"
                     >
-                        <PiMicrosoftExcelLogoFill className="mr-2 h-4 w-4" />{" "}
-                        Đọc File
+                        <PiMicrosoftExcelLogoFill className="mr-2 size-4" /> Đọc
+                        File
                     </Button>
                     <Button
                         onClick={handleCluster}
                         disabled={!allowCluster || !hasFiles}
                     >
-                        <GrSort className="mr-2 h-4 w-4" /> Phân Chia Theo Khóa
+                        <GrSort className="mr-2 size-4" /> Phân Chia Theo Khóa
                         Và Khoa
                     </Button>
                     <InputTotalStudents
                         clusterData={sortedClusterWorksheet}
                         disabled={Object.keys(clusterWorksheet).length === 0}
                     />
-                    <InputBaseScholarshipPrice
+                    <InputScholarshipPrice
                         clusterData={sortedClusterWorksheet}
                         disabled={Object.keys(clusterWorksheet).length === 0}
                     />
@@ -227,7 +233,7 @@ export default function HandleFile() {
                             )
                         }
                     >
-                        <CiFilter className="mr-2 h-4 w-4" />
+                        <CiFilter className="mr-2 size-4" />
                         Lọc Dữ Liệu Theo Điều Kiện
                     </Button>
                     <DownloadFile

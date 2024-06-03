@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Button } from "./ui/button";
 
 interface RenderRawDataProps {
     worksheet: any[][];
@@ -27,20 +28,25 @@ export default function RenderRawData({ worksheet }: RenderRawDataProps) {
     };
 
     return (
-        <div>
-            <table>
+        <div className="w-full pt-4">
+            <table className="bg-slate-100 shadow-md rounded-xl overflow-hidden">
                 <thead>
-                    <tr>
+                    <tr className="bg-blue-100 text-gray-700 text-left">
                         {headerRow.map((headerCell, index) => (
-                            <th key={index}>{headerCell}</th>
+                            <th key={index} className="px-2">
+                                {headerCell}
+                            </th>
                         ))}
                     </tr>
                 </thead>
                 <tbody>
                     {paginatedRows.map((row, rowIndex) => (
-                        <tr key={rowIndex + startIndex}>
+                        <tr
+                            key={rowIndex + startIndex}
+                            className="border-b-2 border-blue-200"
+                        >
                             {row.map((cell, cellIndex) => (
-                                <td key={cellIndex}>
+                                <td key={cellIndex} className="px-2">
                                     {typeof cell === "object" && cell !== null
                                         ? cell.result || cell.error || "N/A"
                                         : cell || ""}
@@ -50,22 +56,24 @@ export default function RenderRawData({ worksheet }: RenderRawDataProps) {
                     ))}
                 </tbody>
             </table>
-            <div>
-                <button
+            <div className="py-4">
+                <Button
                     disabled={currentPage === 1}
                     onClick={() => handlePageChange(currentPage - 1)}
+                    variant="navigator"
                 >
                     Trước
-                </button>
-                <span>
+                </Button>
+                <span className="p-2">
                     Trang {currentPage} Trên {totalPages}
                 </span>
-                <button
+                <Button
                     disabled={currentPage === totalPages}
                     onClick={() => handlePageChange(currentPage + 1)}
+                    variant="navigator"
                 >
                     Sau
-                </button>
+                </Button>
             </div>
         </div>
     );

@@ -66,7 +66,7 @@ export default function DownloadFile({
                     variant="default"
                     disabled={Object.keys(filteredWorksheet).length === 0}
                 >
-                    <MdFileDownload className="mr-2 h-4 w-4" />
+                    <MdFileDownload className="mr-2 size-4" />
                     Xuất file
                 </Button>
             </DialogTrigger>
@@ -88,7 +88,7 @@ export default function DownloadFile({
                     </div>
                     <DialogFooter>
                         <Button type="submit" variant="green">
-                            <MdFileDownload className="mr-2 h-4 w-4" />
+                            <MdFileDownload className="mr-2 size-4" />
                             Xuất file
                         </Button>
                     </DialogFooter>

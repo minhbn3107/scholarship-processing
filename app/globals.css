@@ -74,3 +74,20 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+  @apply w-2; /* Scrollbar width */
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-200 rounded-md; /* Scrollbar track background color */
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-400 rounded-md; /* Scrollbar thumb background color */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-500; /* Scrollbar thumb background color on hover */
+}

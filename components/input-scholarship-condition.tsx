@@ -34,12 +34,10 @@ import {
 
 export default function InputScholarshipCondition() {
     const dispatch = useAppDispatch();
-    const percentScholarshipRecipients = useAppSelector(
-        selectScholarshipCondition
-    );
+    const scholarshipCondition = useAppSelector(selectScholarshipCondition);
     const [open, setOpen] = useState<boolean>(false);
     const [formData, setFormData] = useState<ScholarshipConditionState>(
-        percentScholarshipRecipients.slice()
+        scholarshipCondition.slice()
     );
 
     const handleChange = (
@@ -106,7 +104,7 @@ export default function InputScholarshipCondition() {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button variant="default">
-                    <BsInputCursorText className="mr-2 h-4 w-4" />
+                    <BsInputCursorText className="mr-2 size-4" />
                     Nhập Điều Kiện Học Bổng
                 </Button>
             </DialogTrigger>
@@ -120,7 +118,7 @@ export default function InputScholarshipCondition() {
                             hạnh kiểm
                         </DialogDescription>
                     </DialogHeader>
-                    <div className="grid gap-4 py-4 max-h-96 overflow-y-auto">
+                    <div className="grid gap-4 py-4 pl-2 max-h-96 overflow-y-auto">
                         {formData.map((row, rowIndex) => (
                             <div
                                 key={rowIndex}

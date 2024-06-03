@@ -6,6 +6,7 @@ import { totalStudentReducer } from "./features/total-students/total-students-sl
 import { baseScholarshipPriceReducer } from "./features/base-scholarship-price/base-scholarship-price-slice";
 import { scholarshipConditionReducer } from "./features/scholarship-condition/scholarship-condition-slice";
 import { filteredWorksheetReducer } from "./features/filtered-worksheet/filtered-worksheet-slice";
+import { exceptionBaseScholarshipPriceReducer } from "./features/exception-base-scholarship-price/exception-base-scholarship-price-slice";
 
 export const makeStore = () => {
     return configureStore({
@@ -15,6 +16,7 @@ export const makeStore = () => {
             headerRow: headerRowReducer,
             totalStudent: totalStudentReducer,
             baseScholarshipPrice: baseScholarshipPriceReducer,
+            exceptionBaseScholarshipPrice: exceptionBaseScholarshipPriceReducer,
             scholarshipCondition: scholarshipConditionReducer,
             filteredWorksheet: filteredWorksheetReducer,
         },

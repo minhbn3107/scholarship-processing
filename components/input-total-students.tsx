@@ -56,7 +56,7 @@ export default function InputTotalStudents({
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button variant="default" disabled={disabled}>
-                    <BsInputCursorText className="mr-2 h-4 w-4" />
+                    <BsInputCursorText className="mr-2 size-4" />
                     Nhập Sỉ Số Của Khoa và Khóa
                 </Button>
             </DialogTrigger>
@@ -66,7 +66,7 @@ export default function InputTotalStudents({
                         <DialogTitle>Nhập Sỉ Số Của Khoa và Khóa</DialogTitle>
                         <DialogDescription></DialogDescription>
                     </DialogHeader>
-                    <div className="grid gap-4 py-4 max-h-96 overflow-y-auto">
+                    <div className="grid gap-4 py-4 pr-2 max-h-96 overflow-y-auto">
                         {Object.keys(clusterData).map((key) => (
                             <div
                                 className="grid grid-cols-10 items-center gap-4"
