@@ -59,9 +59,11 @@ export default function ExceptionBaseScholarshipPriceForm({
         e: React.FormEvent<HTMLFormElement>
     ) => {
         e.preventDefault();
-        // console.log(exceptionFormData);
-        dispatch(setExceptionBaseScholarshipPrice(exceptionFormData));
-        setOpen(false);
+        if (Object.keys(exceptionFormData).length !== 0) {
+            // console.log(exceptionFormData);
+            dispatch(setExceptionBaseScholarshipPrice(exceptionFormData));
+            setOpen(false);
+        } else return;
     };
 
     const handleAddEntry = () => {

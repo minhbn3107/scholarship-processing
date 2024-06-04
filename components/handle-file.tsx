@@ -68,6 +68,7 @@ export default function HandleFile() {
         useState<boolean>(false);
     const [hasFiles, setHasFiles] = useState<boolean>(false);
     const [allowCluster, setAllowCluster] = useState<boolean>(false);
+    const [isFiltered, setIsFiltered] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const worksheets: WorksheetsState = useAppSelector(selectWorksheets);
     const clusterWorksheet: ClusterWorksheetState = useAppSelector(
@@ -84,7 +85,6 @@ export default function HandleFile() {
     );
     const exceptionBaseScholarshipPrice: ExceptionBaseScholarshipPriceState =
         useAppSelector(selectExceptionBaseScholarshipPrice);
-
     const sortedClusterWorksheet = sortClusterWorkSheetByKey(clusterWorksheet);
 
     const dispatch = useAppDispatch();
@@ -174,6 +174,7 @@ export default function HandleFile() {
                 scholarshipCondition,
             })
         );
+        setIsFiltered(true);
         setIsLoading(false);
     };
 
@@ -189,7 +190,7 @@ export default function HandleFile() {
         <>
             {isLoading && <Loading />}
             <div className="flex gap-4 w-full">
-                <div className="grid max-w-sm items-center gap-1.5">
+                <div className="grid max-w-sm items-center gap-1.5 w-1/2">
                     <Input
                         type="file"
                         onChange={handleFileChange}
@@ -253,7 +254,8 @@ export default function HandleFile() {
                         Object.keys(clusterWorksheet).length !== 0 &&
                         Object.keys(totalStudents).length !== 0 &&
                         Object.keys(baseScholarshipPrice).length !== 0 &&
-                        scholarshipCondition.length !== 0
+                        scholarshipCondition.length !== 0 &&
+                        isFiltered
                     }
                     handleFilterWorksheetClick={handleFilterWorksheetClick}
                     isSelectedFilteredWorksheet={isSelectedFilteredWorksheet}

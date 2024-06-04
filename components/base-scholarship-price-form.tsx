@@ -15,6 +15,7 @@ import { ClusterWorksheetState } from "@/lib/features/cluster-worksheet/cluster-
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import {
     BaseScholarshipPriceState,
+    selectBaseScholarshipPrice,
     setBaseScholarshipPrice,
 } from "@/lib/features/base-scholarship-price/base-scholarship-price-slice";
 import { economyGroup, techniqueGroup } from "@/utils/faculty-group";
@@ -30,7 +31,10 @@ export default function BaseScholarshipPriceForm({
     setOpen,
     clusterData,
 }: BaseScholarshipPriceFormProps) {
-    const [formData, setFormData] = useState<Record<string, number>>({});
+    const baseScholarshipPrice = useAppSelector(selectBaseScholarshipPrice);
+    const [formData, setFormData] = useState<BaseScholarshipPriceState>(
+        baseScholarshipPrice ? { ...baseScholarshipPrice } : {}
+    );
     const [economyData, setEconomyData] = useState<{
         [key: string]: number | null;
     }>({});
@@ -41,13 +45,19 @@ export default function BaseScholarshipPriceForm({
 
     const dispatch = useAppDispatch();
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement>,
+        key: string,
+        index: number
+    ) => {
+        const { value } = e.target;
         const numberValue = parseInt(value.replace(/\D/g, ""));
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: numberValue,
-        }));
+        setFormData((prevData) => {
+            const updatedData = { ...prevData };
+            updatedData[key] = [...(prevData[key] || [])];
+            updatedData[key][index] = numberValue;
+            return updatedData;
+        });
     };
 
     const handleEconomyChange = (
@@ -80,10 +90,7 @@ export default function BaseScholarshipPriceForm({
 
         for (const key in formData) {
             const clusterName = key.includes("-TT") ? key.split("-TT")[0] : key;
-            if (!baseScholarshipPrice[clusterName]) {
-                baseScholarshipPrice[clusterName] = [];
-            }
-            baseScholarshipPrice[clusterName].push(formData[key]);
+            baseScholarshipPrice[clusterName] = formData[key];
         }
 
         dispatch(setBaseScholarshipPrice(baseScholarshipPrice));
@@ -109,11 +116,17 @@ export default function BaseScholarshipPriceForm({
             );
 
             if (isEconomyGroup) {
-                setFormData((prevData) => ({
-                    ...prevData,
-                    [key]: economyData[courseOfFaculty] as number,
-                    [`${key}-TT`]: economyData[courseOfFacultyTT] as number,
-                }));
+                setFormData((prevData) => {
+                    const newData: BaseScholarshipPriceState = { ...prevData };
+                    const clusterName = key.includes("-TT")
+                        ? key.split("-TT")[0]
+                        : key;
+                    newData[clusterName] = [
+                        economyData[courseOfFaculty] ?? 0,
+                        economyData[courseOfFacultyTT] ?? 0,
+                    ];
+                    return newData;
+                });
             }
         }
     };
@@ -137,11 +150,17 @@ export default function BaseScholarshipPriceForm({
             );
 
             if (isTechniqueGroup) {
-                setFormData((prevData) => ({
-                    ...prevData,
-                    [key]: techniqueData[courseOfFaculty] as number,
-                    [`${key}-TT`]: techniqueData[courseOfFacultyTT] as number,
-                }));
+                setFormData((prevData) => {
+                    const newData: BaseScholarshipPriceState = { ...prevData };
+                    const clusterName = key.includes("-TT")
+                        ? key.split("-TT")[0]
+                        : key;
+                    newData[clusterName] = [
+                        techniqueData[courseOfFaculty] ?? 0,
+                        techniqueData[courseOfFacultyTT] ?? 0,
+                    ];
+                    return newData;
+                });
             }
         }
     };
@@ -284,12 +303,8 @@ export default function BaseScholarshipPriceForm({
                                 name={key}
                                 type="text"
                                 required
-                                onChange={handleChange}
-                                value={
-                                    formData[key] !== undefined
-                                        ? formData[key]
-                                        : ""
-                                }
+                                onChange={(e) => handleChange(e, key, 0)}
+                                value={formData[key]?.[0] || ""}
                                 className="w-full pr-12"
                             />
                             <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
@@ -302,12 +317,8 @@ export default function BaseScholarshipPriceForm({
                                 name={`${key}-TT`}
                                 type="text"
                                 required
-                                onChange={handleChange}
-                                value={
-                                    formData[`${key}-TT`] !== undefined
-                                        ? formData[`${key}-TT`]
-                                        : ""
-                                }
+                                onChange={(e) => handleChange(e, key, 1)}
+                                value={formData[key]?.[1] || ""}
                                 className="w-full pr-12"
                             />
                             <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
